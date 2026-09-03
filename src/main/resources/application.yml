@@ -1,0 +1,39 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: financial-transaction-service
+
+  # In-memory H2 by default so the service runs with zero external setup.
+  # Point these at Postgres/MySQL in application-prod.yml (or env vars) for
+  # a real deployment - the JPA layer doesn't change.
+  datasource:
+    url: jdbc:h2:mem:fintx;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:dev-only-secret-do-not-use-in-production-please}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+
+logging:
+  level:
+    com.shashireddy.fintx: INFO
